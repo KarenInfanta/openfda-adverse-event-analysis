@@ -11,6 +11,7 @@
 - **Source:** openFDA drug adverse-event API (FAERS data), reports first received 1-31 January 2024. openFDA reported its data as last updated on 2026-07-30 when the first request was made.
 - **Sample:** 3,100 of the 106,399 reports received that month (2.9%): up to 100 reports per day, in the order the API returned them. The sample is stratified by day. It is **not random**.
 - **True report volumes** (Finding 1) come from the API's server-side `count` aggregation, not from the sample.
+- **Versions:** openFDA returns only the latest version of each report and dates each case by when FDA first received it (`receivedate`). A report with `safetyreportversion` above 1 is the latest version of a case that was updated.
 - **Counting unit:** one report = one `safetyreportid`. Never patients. Drug and reaction counts use unique reports; repeated entries inside one report are collapsed (11,856 drug entries became 8,605 unique report-drug rows; 9,335 reaction entries became 9,217 unique report-reaction rows).
 - **Provenance:** every number below comes from executed code in notebooks 02-04 and SQL queries Q1-Q10 run on MySQL 8.0. The database was reconciled against the pandas results before any query was run (12 of 12 load checks passed).
 
@@ -38,7 +39,7 @@ DEATH appears in 219 of 3,100 reports (7.1%), off label use in 211 (6.8%), drug 
 
 **Finding 6 - Reaction terms differ sharply by suspect drug (sample).**
 Within each drug's own reports: drug abuse in 70 of 79 fentanyl reports (89%); drug dose omission by device in 66 of 113 evolocumab reports (58%); hot flush in 33 of 167 leuprolide acetate reports (20%); haemoglobin decreased in 25 of 95 clozapine reports (26%); death in 22 of 71 venetoclax reports (31%); pruritus in 19 of 137 dupilumab reports (14%).
-*Limits:* 62-167 reports per drug, so small cells are unstable. Nine reports list two or more of the ten drugs and appear under each. Do not compare percentages across drugs as a measure of risk.
+*Limits:* no reaction in a report is linked to a specific drug, so these are terms co-reported in the same report, not reactions of that drug. 62-167 reports per drug, so small cells are unstable. Nine reports list two or more of the ten drugs and appear under each. Do not compare percentages across drugs as a measure of risk.
 
 **Finding 7 - Data-quality issues (sample).**
 
@@ -56,7 +57,7 @@ Within each drug's own reports: drug abuse in 70 of 79 fentanyl reports (89%); d
 | Reaction entries repeating a term already in the report | 118 | 9,335 | 1.3% |
 | Reaction entries with outcome unknown or not recorded | 5,338 | 9,335 | 57.2% |
 
-Of 1,945 duplicate-identifier entries, 270 were the report's own company number and only 3 pointed to a different report in the sample, so the flag mostly lists other organisations' identifiers for the same case. The longest drug-name value is 355 characters, so some entries are free text rather than a single drug name.
+FDA's field reference says `duplicate` is 1 when earlier versions of a report were submitted to FDA (openFDA shows only the latest version), and `reportduplicate` gives the organisation providing the duplicate and its case identifier. Of 1,945 such entries in the sample, 270 were the report's own company number and only 3 pointed to a different report in the sample; 3 is a minimum, because only matches inside the 3,100 sampled reports can be seen. The longest drug-name value is 355 characters, so some entries are free text rather than a single drug name.
 
 **Finding 8 - Seriousness by age group (SQL).**
 Share flagged serious: 61.0% (0-17), 60.4% (18-44), 64.2% (45-64), 64.8% (65-74), 71.1% (75+). Death-flag share: 5.9%, 14.1%, 20.9%, 13.5%, 23.9%. Reports with no age: 56.8% serious and 11.3% death flag, versus 64.9% and 17.8% among reports with an age, so missing age is not random.

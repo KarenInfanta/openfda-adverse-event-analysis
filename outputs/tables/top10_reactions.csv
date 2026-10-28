@@ -1,0 +1,11 @@
+reaction_pt,reports,pct_of_all_reports,product_use_term
+DEATH,219,7.1,False
+OFF LABEL USE,211,6.8,True
+DRUG INEFFECTIVE,154,5.0,True
+FATIGUE,107,3.5,False
+PRODUCT DOSE OMISSION ISSUE,103,3.3,True
+DRUG DOSE OMISSION BY DEVICE,82,2.6,True
+DRUG ABUSE,80,2.6,False
+DIARRHOEA,79,2.5,False
+FALL,75,2.4,False
+DYSPNOEA,73,2.4,False

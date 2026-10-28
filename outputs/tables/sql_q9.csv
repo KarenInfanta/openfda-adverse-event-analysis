@@ -1,0 +1,7 @@
+age_group,n_reports,n_death_flag,pct_death_flag,n_fentanyl_suspect,n_reports_excl_fentanyl,n_death_flag_excl_fentanyl,pct_death_flag_excl_fentanyl
+0-17,118,7,5.9,0,118,7,5.9
+18-44,333,47,14.1,5,328,44,13.4
+45-64,612,128,20.9,69,543,61,11.2
+65-74,384,52,13.5,0,384,52,13.5
+75+,377,90,23.9,0,377,90,23.9
+Not recorded,1276,144,11.3,5,1271,143,11.3
